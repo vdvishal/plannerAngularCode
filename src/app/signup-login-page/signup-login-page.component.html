@@ -1,0 +1,87 @@
+<!-- <nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand">Meeting Planner</a>
+</nav> -->
+<div class="container-fluid custom" >
+  <div class="row">
+    <div class="col-md-6 col-xl-4 col-lg-4 col-sm-12 mx-auto">
+      <div class="card w3-container w3-center w3-animate-opacity" *ngIf="show" style="top: 2em;border-radius: 1.5em;background-color: rgba(0,172,135,0.7);color: aliceblue">
+        <div class="card-body" style="">
+          <h5 class="card-title text-center">Register</h5>
+          <form class="form-signin" #myForm="ngForm"> 
+
+           <div class="form-label-group">
+              <input type="email" id="inputEmail" class="form-control " placeholder="Email address" [(ngModel)]='mail'  name="mail" required>
+              <br>
+            </div>
+
+            <div class="form-label-group">
+              <input type="text" id="inputUsername" class="form-control " placeholder="User name" [(ngModel)]='username'  name="username" required>
+              <br>
+            </div>
+
+            <div class="form-check form-check-inline" style="margin-bottom:10px">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="admin" [(ngModel)]='admin' checked>
+              <label class="form-check-label" for="exampleRadios1">
+                Admin User
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="normal">
+              <label class="form-check-label" for="exampleRadios2">
+                Normal User
+              </label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="inputPassword" class="form-control" placeholder="Password"  name="2" [(ngModel)]='newpassword' required>
+              <br>
+            </div>
+
+            <div class="form-label-group">
+              <input type="text" id="firstName" class="form-control" placeholder="Firstname" [(ngModel)]='firstName' name="3" required autofocus>
+              <br>
+            </div>
+
+            <div class="form-label-group">
+              <input type="text" id="lastName" class="form-control" placeholder="Lastname" [(ngModel)]='lastName' name="4" required autofocus>
+              <br>
+            </div>
+
+            <div class="form-label-group">
+                <!-- <select name="countryCode" id="" style="border-radius: 6px;margin: 2px;padding: 10px" [(ngModel)]='ccode' name="code" placeholder="Country Code">
+                    <option *ngFor="let i of code" >{{i}}</option>
+                </select> -->
+              <input type="text" id="number" class="form-control" placeholder="Mobile Number" [(ngModel)]='number' name="5" required autofocus>
+              <br>
+            </div>
+            <button class="btn btn-lg btn-success btn-block text-uppercase" style="border-radius: 2em;color: white" type="submit" (click)="signup();adminCheck();myForm.reset()">Sign Up</button>
+            <a class="d-block text-center mt-2 small" (click)="token()" style="cursor: pointer;">Sign In</a>
+          </form>
+        </div>
+      </div>
+        <div *ngIf="!show"><h2 class="text-center" style="margin-top:2.5em">Meeting Planner</h2></div>
+      <div class="card w3-container w3-center w3-animate-opacity" *ngIf="!show" style="top: 2em;border-radius: 1.5em;background-color: rgba(0,172,135,0.7);color: aliceblue">
+        
+        <div class="card-body" style="">
+          <h5 class="card-title text-center">Login</h5>
+          <form class="form-signin"> 
+
+           <div class="form-label-group">
+              <input type="email" id="inputEmail" class="form-control" placeholder="Email address" [(ngModel)]="email" name="mail">
+              <br>
+            </div>
+            
+            <div class="form-label-group">
+              <input type="password" id="inputPassword" class="form-control" placeholder="Password" required [(ngModel)]="password" name="pass">
+              <br>
+            </div>
+
+            <button class="btn btn-lg btn-success btn-block text-uppercase" style="border-radius: 2em;color: aliceblue" type="submit" (click)="login()">Login</button>
+            <a class="d-block text-center mt-2 small" (click)="token()" style="cursor: pointer;">Register</a>
+            <a class="d-block text-center mt-2 small" routerLink='/forgotpassword' style="cursor: pointer;color: aliceblue">Forgot Password</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

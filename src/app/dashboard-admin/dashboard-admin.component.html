@@ -1,0 +1,184 @@
+<nav class="navbar st-nav">
+
+  <button type="button" class="btn btn-primary bmd-btn-fab float-right" (click)='this.modal.open(modalContent2)'>
+    <i class="material-icons" style="font-size:40px;">add</i>
+  </button>
+  <h2 class="navbar-brand mx-auto">Meeting Planner</h2>
+  <button type="submit" class="btn btn-outline-light" (click)="logout();">Logout</button>
+</nav>
+
+<ng-template #modalContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Meeting Info</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');hideedit()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="showEditEvent" *ngIf=!editevent>
+      <div>
+        Meeting Starts From:
+        <pre>{{ modalData?.event.start }}</pre>
+        To
+        <pre>{{ modalData?.event.end }}</pre>
+      </div>
+      <div>
+        Meeting Purpose:
+        <pre>{{ modalData?.event.title }}</pre>
+      </div>
+      <div>
+        Meeting Venue:
+        <pre>{{ modalData?.event.venue }}</pre>
+      </div>
+      <div>
+        Meeting Held By:
+        <pre>{{ modalData?.event.userName }}</pre>
+      </div>
+    </div>
+    <div *ngIf=editevent>
+      <form #myForm="ngForm">
+        <div class="form-group">
+          <label for="exampleInput">Meeting Purpose</label>
+          <input type="text" class="form-control" placeholder="Edit purpose" [(ngModel)]='editTitle' name="1">
+        </div>
+        <div class="form-group">
+          <label for="exampleInput">Meeting Venue</label>
+          <input type="text" class="form-control" placeholder="Edit venue" [(ngModel)]='venue' name="1">
+        </div>
+        <div class="form-group">
+          <label>
+            Meeting Start:
+          </label>
+          <input [owlDateTimeTrigger]="dt14" [owlDateTime]="dt14" [(ngModel)]="editStart" name="start1">
+          <owl-date-time #dt14></owl-date-time>
+
+          <label>
+            Meeting End:
+          </label>
+          <input [owlDateTimeTrigger]="dt15" [owlDateTime]="dt15" [(ngModel)]="editEnd" name="end1">
+          <owl-date-time #dt15></owl-date-time>
+        </div>
+        <div class="form-group">
+          <label for="exampleInput3">Choose Color</label>
+          <input [style.background]="color" [colorPicker]="color" (colorPickerChange)="color=$event" />
+        </div>
+        <button type="submit" class="btn btn-primary" (click)='editMeeting();showedit();myForm.reset()'>Submit</button>
+      </form>
+    </div>
+
+  </div>
+  <div class="modal-footer" *ngIf=!editevent>
+    <button type="submit" class="btn btn-secondary" (click)='showedit();'>Edit</button>
+    <button type="submit" class="btn btn-danger" (click)='deleteMeeting(modalData?.event.meetingId)' style="margin-left:2.5px">Delete</button>
+  </div>
+</ng-template>
+
+<ng-template #modalContent2 let-modal>
+  <div class="modal-header" style="">
+    <h4 class="modal-title" id="modal-basic-title">Plan Meeting</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form style="padding:2em">
+      <div class="form-group">
+        <label for="exampleInput">Meeting Purpose</label>
+        <input type="text" class="form-control" id="exampleInput" placeholder="Enter Purpose" [(ngModel)]='title' name="1">
+      </div>
+      <div class="form-group">
+        <label for="exampleInput3">Meeting Venue</label>
+        <input type="text" class="form-control" id="exampleInput1" placeholder="Enter the Venue" [(ngModel)]='venue'
+          name="2">
+      </div>
+      <div class="form-group">
+        <label>
+          Meeting Start:
+        </label>
+        <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [(ngModel)]="dateTimeStart" name="start">
+        <owl-date-time #dt12></owl-date-time>
+
+
+        <label style="margin-left:3px">
+          Meeting End:
+        </label>
+        <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [(ngModel)]="dateTimeEnd" name="end">
+        <owl-date-time #dt13></owl-date-time>
+      </div>
+      <div class="form-group">
+        <label for="exampleInput3">Choose Color: </label>
+        <input [style.background]="color" [colorPicker]="color" (colorPickerChange)="color=$event" />
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="createMeeting();">Submit</button>
+    </form>
+
+  </div>
+</ng-template>
+
+<div class="container-fluid" style="">
+  <div class="row">
+
+    <div class="col-lg-10 col-md-10" style="margin-top: 20px;">
+
+
+      <div class="row text-center">
+        <div class="col-md-4">
+          <div class="btn-group">
+            <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false">
+              Previous
+            </div>
+            <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+              Today
+            </div>
+            <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false">
+              Next
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+        </div>
+        <div class="col-md-4">
+          <div class="btn-group">
+            <div class="btn btn-primary" (click)="view = CalendarView.Month" [class.active]="view === CalendarView.Month">
+              Month
+            </div>
+            <div class="btn btn-primary" (click)="view = CalendarView.Week" [class.active]="view === CalendarView.Week">
+              Week
+            </div>
+            <div class="btn btn-primary" (click)="view = CalendarView.Day" [class.active]="view === CalendarView.Day">
+              Day
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div [ngSwitch]="view">
+        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="meetings"
+          [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" [refresh]="refresh" (eventClicked)="handleEvent($event.event)">
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [refresh]="refresh" (eventClicked)="handleEvent($event.event)" [events]="meetings">
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [refresh]="refresh" [events]="meetings"
+          (eventClicked)="handleEvent($event.event)">
+        </mwl-calendar-day-view>
+      </div>
+    </div>
+
+    <div class="col-lg-2 col-md-2">
+      <div class="">
+        <h4 style="padding:10px;margin-left: 10px">All users</h4>
+      </div>
+
+      <div class="d-flex justify-content-center" style="overflow-y:scroll;height: 50vh;background-color: #F5F5F5">
+        <div *ngIf=allUsers>
+          <nav class="nav flex-column">
+            <a class="" *ngFor='let i of allUsers' style="margin: 0.5em">{{i.firstName}}</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
